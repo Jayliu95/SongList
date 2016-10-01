@@ -13,11 +13,11 @@ public class SongLib extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/fxml/view.fxml"));
+        loader.setLocation(getClass().getResource("view.fxml"));
         SplitPane splitPane = (SplitPane) loader.load();
 
 
-        Scene scene = new Scene(splitPane, 700, 700);
+        Scene scene = new Scene(splitPane);
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
