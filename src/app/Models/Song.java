@@ -98,7 +98,7 @@ public class Song {
     }
 
     public String toString(){
-        return "Name: " + getTitle() +"\n Artist: " + getArtist() + "\n Album: " + getAlbum() + "\n Year: " + getYear();
+        return  getTitle();
     }
 
 }

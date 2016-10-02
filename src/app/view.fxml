@@ -39,9 +39,9 @@
                   <TextField fx:id="year" promptText="Year" />
                   <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                      <children>
-                        <Button fx:id="add" mnemonicParsing="false" onAction="#handleAddButtonAction" text="Add" />
-                        <Button fx:id="edit" mnemonicParsing="false" text="Edit" />
-                        <Button fx:id="delete" mnemonicParsing="false" text="Delete" />
+                        <Button fx:id="addBtn" mnemonicParsing="false" onAction="#handleAddButtonAction" text="Add" />
+                        <Button fx:id="editBtn" mnemonicParsing="false" onAction="#handleEditButtonAction" text="Edit" />
+                        <Button fx:id="deleteBtn" mnemonicParsing="false" onAction="#handleDeleteButtonAction" text="Delete" />
                      </children>
                      <VBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
