@@ -28,9 +28,9 @@
                         <Font size="30.0" />
                      </font>
                   </Label>
-                <Label fx:id="err_msg" text="" textAlignment="CENTER">
+                <Label fx:id="info_msg" text="" textAlignment="CENTER">
                     <font>
-                        <Font size="10.0" />
+                        <Font size="16.0" />
                     </font>
                 </Label>
                   <TextField fx:id="title" alignment="TOP_LEFT" promptText="Name" />

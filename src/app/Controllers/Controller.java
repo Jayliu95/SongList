@@ -5,11 +5,13 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
 import javax.swing.*;
 
@@ -26,11 +28,11 @@ public class Controller {
     @FXML private Button editBtn;
     @FXML private Button deleteBtn;
 
-    @FXML private ListView songListView;
-    @FXML private Label err_msg;
+    @FXML private ListView<Song> songListView;
+    @FXML private Label info_msg;
 
     private ObservableList<Song> songObservableList;
-    private Song selecSong;
+    private Song selectSong;
 
     /* State variables */
     private boolean addState = false;
@@ -39,20 +41,33 @@ public class Controller {
 
     @FXML private void initialize() {
         System.out.println("This should be initialized before anything else happens");
+        // Initialize songList with saved data if it exists.
         songObservableList = FXCollections.observableArrayList();
+        FXCollections.sort(songObservableList);
+        songListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                info_msg.setText("");
+                Song selectedSong = songObservableList.get(songListView.getSelectionModel().getSelectedIndex());
+                showSongOnForm(selectedSong);
+                changeToEditState();
+
+            }
+        });
+        songListView.setItems(songObservableList);
         resetStates();
         changeToAddState();
-        // Initialize songList with saved data if it exists.
 
     }
     @FXML protected void handleAddButtonAction(ActionEvent event) {
+        info_msg.setText("");
         if(editState){
             resetStates();
             changeToAddState();
             return;
         }
         if (title.getText().isEmpty() || artist.getText().isEmpty()){
-            err_msg.setText("Missing title and/or artist.");
+            setInfoMsg("Missing title and/or artist.", "red");
             return;
         }
 
@@ -62,26 +77,55 @@ public class Controller {
             try {
                 yearValidate = Integer.parseInt(year.getText());
             } catch (NumberFormatException error) {
-                err_msg.setText("Year must be an integer.");
+                setInfoMsg("Year must be an integer." ,"red");
                 return;
             }
         }
         Song newSong = new Song(title.getText(), artist.getText(), album.getText(), yearValidate);
         if (songObservableList.contains(newSong)) {
-            err_msg.setText("Song already exists in your playlist.");
+            System.out.println("Hello world");
+            setInfoMsg("Song already exists in your playlist.", "red");
             return;
         }
-        selecSong = newSong;
+
+        // Adding the songs to observable list and list view.
+        selectSong = newSong;
         songObservableList.addAll(newSong);
-        songListView.setItems(songObservableList);
         songListView.getSelectionModel().select(newSong);
+        setInfoMsg("Song added successfully!", "green");
         resetStates();
         changeToEditState();
     }
 
     @FXML protected void handleEditButtonAction(ActionEvent event){
+        info_msg.setText("");
         if(saveState){
-            System.out.println("Item saved");
+            if (title.getText().isEmpty() || artist.getText().isEmpty()){
+                setInfoMsg("Missing title and/or artist.", "red");
+                return;
+            }
+            int yearValidate = 0;
+            if(!year.getText().isEmpty()) {
+                try {
+                    yearValidate = Integer.parseInt(year.getText());
+                } catch (NumberFormatException error) {
+                    setInfoMsg("Year must be an integer.", "red");
+                    return;
+                }
+            }
+            /* Update does not reflect on FXML view. Resorting to delete and add method */
+            /*
+            selectSong.setTitle(title.getText());
+            selectSong.setAlbum(album.getText());
+            selectSong.setArtist(artist.getText());
+            selectSong.setYear(yearValidate);
+            */
+            Song updatedSong = new Song(title.getText(), album.getText(), artist.getText(), yearValidate);
+            songObservableList.removeAll(selectSong);
+            selectSong = updatedSong;
+            songObservableList.addAll(updatedSong);
+            songListView.getSelectionModel().select(selectSong);
+            setInfoMsg("Save successfully!", "green");
             resetStates();
             changeToEditState();
             return;
@@ -91,19 +135,30 @@ public class Controller {
 
     @FXML protected void handleDeleteButtonAction(ActionEvent event){
         System.out.println(songListView.getSelectionModel().getSelectedItems());
-        songObservableList.remove(selecSong);
+        songObservableList.remove(selectSong);
+        if(songObservableList.size() > 0){
+            selectSong = songObservableList.get(0);
+            songListView.getSelectionModel().selectFirst();
+        }else{
+            changeToAddState();
+        }
+        setInfoMsg("Delete successfully!", "green");
         System.out.println(songObservableList);
     }
 
-    /*
-     *  Upon selection, change "Add" button to "Edit".
-     */
-    @FXML protected void handleSongSelectionAction(ActionEvent event){
-
-    }
 
 
     // Utility Functions
+
+    private void setInfoMsg(String msg, String color){
+        if (msg.isEmpty()){
+            info_msg.setText("");
+            return;
+        }
+        info_msg.setText(msg);
+        info_msg.setStyle("-fx-text-fill: " + color + ";");
+    }
+
     private void clearForm(){
         title.clear();
         artist.clear();
@@ -111,17 +166,25 @@ public class Controller {
         year.clear();
     }
 
-    private void resetStates(){
-        addState = false;
-        editState = false;
-        saveState = false;
-    }
-
     private void disableForm(boolean setDisable){
         title.setDisable(setDisable);
         artist.setDisable(setDisable);
         album.setDisable(setDisable);
         year.setDisable(setDisable);
+    }
+
+    private void showSongOnForm(Song song){
+        clearForm();
+        title.setText(song.getTitle());
+        artist.setText(song.getArtist());
+        album.setText(song.getAlbum());
+        year.setText(String.valueOf(song.getYear()));
+    }
+
+    private void resetStates(){
+        addState = false;
+        editState = false;
+        saveState = false;
     }
 
     private void changeToAddState(){
@@ -158,6 +221,5 @@ public class Controller {
         deleteBtn.setDisable(false);
         disableForm(false);
     }
-
-
+    
 }

@@ -5,10 +5,12 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.util.Comparator;
+
 /**
  * Created by xliu189 on 10/1/2016.
  */
-public class Song {
+public class Song implements Comparable<Song> {
     private final StringProperty title;
     private final StringProperty artist;
     private final StringProperty album;
@@ -96,7 +98,10 @@ public class Song {
         //  Defining two songs being equal if they have the same title and artist
         return (this.title == ((Song) obj).title && this.artist == ((Song) obj).artist);
     }
-
+    @Override
+    public int compareTo(Song otherSong) {
+        return this.getTitle().compareToIgnoreCase(otherSong.getTitle());
+    }
     public String toString(){
         return  getTitle();
     }
