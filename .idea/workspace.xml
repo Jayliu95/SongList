@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="71da4bcd-6801-4722-a0e1-3c0ec5d3e52e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/SongList/app/Controllers/Controller.class" afterPath="$PROJECT_DIR$/out/production/SongList/app/Controllers/Controller.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/app/Controllers/Controller.java" afterPath="$PROJECT_DIR$/src/app/Controllers/Controller.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/app/Models/Song.java" afterPath="$PROJECT_DIR$/src/app/Models/Song.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/app/view.fxml" afterPath="$PROJECT_DIR$/src/app/view.fxml" />
     </list>
     <ignored path="SongList.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -57,17 +53,13 @@
       <file leaf-file-name="Controller.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/app/Controllers/Controller.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1193">
-              <caret line="223" column="4" selection-start-line="223" selection-start-column="4" selection-end-line="223" selection-end-column="4" />
+            <state relative-caret-position="194">
+              <caret line="46" column="37" selection-start-line="46" selection-start-column="37" selection-end-line="46" selection-end-column="37" />
               <folding>
-                <element signature="method#handleDeleteButtonAction#0;class#Controller#0" expanded="false" />
                 <element signature="method#setInfoMsg#0;class#Controller#0" expanded="false" />
                 <element signature="method#clearForm#0;class#Controller#0" expanded="false" />
                 <element signature="method#disableForm#0;class#Controller#0" expanded="false" />
-                <element signature="method#showSongOnForm#0;class#Controller#0" expanded="false" />
                 <element signature="method#resetStates#0;class#Controller#0" expanded="false" />
-                <element signature="method#changeToAddState#0;class#Controller#0" expanded="false" />
-                <element signature="method#changeToEditState#0;class#Controller#0" expanded="false" />
                 <element signature="method#changeToSaveState#0;class#Controller#0" expanded="false" />
               </folding>
             </state>
@@ -583,14 +575,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/app/Controllers/Controller.java</url>
-          <line>41</line>
-          <properties class="app.Controllers.Controller" method="initialize" />
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
       <option name="time" value="3" />
     </breakpoint-manager>
     <watches-manager />
@@ -628,14 +612,10 @@
         <state relative-caret-position="1479">
           <caret line="98" column="54" selection-start-line="98" selection-start-column="54" selection-end-line="98" selection-end-column="54" />
           <folding>
-            <element signature="method#handleDeleteButtonAction#0;class#Controller#0" expanded="false" />
             <element signature="method#setInfoMsg#0;class#Controller#0" expanded="false" />
             <element signature="method#clearForm#0;class#Controller#0" expanded="false" />
             <element signature="method#disableForm#0;class#Controller#0" expanded="false" />
-            <element signature="method#showSongOnForm#0;class#Controller#0" expanded="false" />
             <element signature="method#resetStates#0;class#Controller#0" expanded="false" />
-            <element signature="method#changeToAddState#0;class#Controller#0" expanded="false" />
-            <element signature="method#changeToEditState#0;class#Controller#0" expanded="false" />
             <element signature="method#changeToSaveState#0;class#Controller#0" expanded="false" />
           </folding>
         </state>
@@ -683,14 +663,10 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="method#handleDeleteButtonAction#0;class#Controller#0" expanded="false" />
             <element signature="method#setInfoMsg#0;class#Controller#0" expanded="false" />
             <element signature="method#clearForm#0;class#Controller#0" expanded="false" />
             <element signature="method#disableForm#0;class#Controller#0" expanded="false" />
-            <element signature="method#showSongOnForm#0;class#Controller#0" expanded="false" />
             <element signature="method#resetStates#0;class#Controller#0" expanded="false" />
-            <element signature="method#changeToAddState#0;class#Controller#0" expanded="false" />
-            <element signature="method#changeToEditState#0;class#Controller#0" expanded="false" />
             <element signature="method#changeToSaveState#0;class#Controller#0" expanded="false" />
           </folding>
         </state>
@@ -738,14 +714,10 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="method#handleDeleteButtonAction#0;class#Controller#0" expanded="false" />
             <element signature="method#setInfoMsg#0;class#Controller#0" expanded="false" />
             <element signature="method#clearForm#0;class#Controller#0" expanded="false" />
             <element signature="method#disableForm#0;class#Controller#0" expanded="false" />
-            <element signature="method#showSongOnForm#0;class#Controller#0" expanded="false" />
             <element signature="method#resetStates#0;class#Controller#0" expanded="false" />
-            <element signature="method#changeToAddState#0;class#Controller#0" expanded="false" />
-            <element signature="method#changeToEditState#0;class#Controller#0" expanded="false" />
             <element signature="method#changeToSaveState#0;class#Controller#0" expanded="false" />
           </folding>
         </state>
@@ -806,17 +778,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/app/Controllers/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1193">
-          <caret line="223" column="4" selection-start-line="223" selection-start-column="4" selection-end-line="223" selection-end-column="4" />
+        <state relative-caret-position="194">
+          <caret line="46" column="37" selection-start-line="46" selection-start-column="37" selection-end-line="46" selection-end-column="37" />
           <folding>
-            <element signature="method#handleDeleteButtonAction#0;class#Controller#0" expanded="false" />
             <element signature="method#setInfoMsg#0;class#Controller#0" expanded="false" />
             <element signature="method#clearForm#0;class#Controller#0" expanded="false" />
             <element signature="method#disableForm#0;class#Controller#0" expanded="false" />
-            <element signature="method#showSongOnForm#0;class#Controller#0" expanded="false" />
             <element signature="method#resetStates#0;class#Controller#0" expanded="false" />
-            <element signature="method#changeToAddState#0;class#Controller#0" expanded="false" />
-            <element signature="method#changeToEditState#0;class#Controller#0" expanded="false" />
             <element signature="method#changeToSaveState#0;class#Controller#0" expanded="false" />
           </folding>
         </state>

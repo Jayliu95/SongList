@@ -7,10 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
 import javax.swing.*;
@@ -48,8 +45,8 @@ public class Controller {
             @Override
             public void handle(MouseEvent event) {
                 info_msg.setText("");
-                Song selectedSong = songObservableList.get(songListView.getSelectionModel().getSelectedIndex());
-                showSongOnForm(selectedSong);
+                selectSong = songObservableList.get(songListView.getSelectionModel().getSelectedIndex());
+                showSongOnForm(selectSong);
                 changeToEditState();
 
             }
@@ -100,6 +97,14 @@ public class Controller {
     @FXML protected void handleEditButtonAction(ActionEvent event){
         info_msg.setText("");
         if(saveState){
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Save Confirmation");
+            alert.setHeaderText("Save Confirmation");
+            alert.setContentText("Are you sure you want to change the song info?");
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.CANCEL) {
+                return;
+            }
             if (title.getText().isEmpty() || artist.getText().isEmpty()){
                 setInfoMsg("Missing title and/or artist.", "red");
                 return;
@@ -135,10 +140,20 @@ public class Controller {
 
     @FXML protected void handleDeleteButtonAction(ActionEvent event){
         System.out.println(songListView.getSelectionModel().getSelectedItems());
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Confirmation");
+        alert.setHeaderText("Delete Confirmation");
+        alert.setContentText("Are you sure you want to delete the song?");
+        alert.showAndWait();
+        if (alert.getResult() == ButtonType.CANCEL) {
+            return;
+        }
         songObservableList.remove(selectSong);
         if(songObservableList.size() > 0){
             selectSong = songObservableList.get(0);
             songListView.getSelectionModel().selectFirst();
+            showSongOnForm(selectSong);
+            changeToEditState();
         }else{
             changeToAddState();
         }
@@ -201,6 +216,7 @@ public class Controller {
 
     private void changeToEditState(){
         System.out.println("Current State: EditState");
+        resetStates();
         editState = true;
         addBtn.setText("New");
         editBtn.setText("Edit");
@@ -221,5 +237,5 @@ public class Controller {
         deleteBtn.setDisable(false);
         disableForm(false);
     }
-    
+
 }
