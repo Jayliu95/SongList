@@ -37,6 +37,7 @@ public class Controller {
     private boolean saveState = false;
 
     @FXML private void initialize() {
+
         System.out.println("This should be initialized before anything else happens");
         // Initialize songList with saved data if it exists.
         songObservableList = FXCollections.observableArrayList();
