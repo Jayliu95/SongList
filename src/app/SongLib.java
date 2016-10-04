@@ -1,5 +1,6 @@
 package app;
 
+import app.Controllers.Controller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,8 +18,9 @@ public class SongLib extends Application {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(SongLib.class.getResource("view.fxml"));
         SplitPane splitPane = (SplitPane) loader.load();
-
         Scene scene = new Scene(splitPane);
+        Controller controller = loader.getController();
+        controller.write(primaryStage);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

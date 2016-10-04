@@ -1,6 +1,7 @@
 package app.Controllers;
 
 import app.Models.Song;
+import app.SongLib;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,8 +10,15 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import javax.swing.*;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 
 public class Controller {
@@ -36,8 +44,8 @@ public class Controller {
     private boolean editState = false;
     private boolean saveState = false;
 
-    @FXML private void initialize() {
 
+    @FXML private void initialize() {
         System.out.println("This should be initialized before anything else happens");
         // Initialize songList with saved data if it exists.
         songObservableList = FXCollections.observableArrayList();
@@ -274,6 +282,25 @@ public class Controller {
         editBtn.setDisable(false);
         deleteBtn.setDisable(false);
         disableForm(false);
+    }
+
+    public void write(Stage primaryStage) {
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                try {
+                    // write object to file
+                    FileOutputStream fos = new FileOutputStream("Objectsavefile.ser");
+                    ObjectOutputStream oos = new ObjectOutputStream(fos);
+                    oos.writeObject(new ArrayList<Song>(songObservableList));
+                    oos.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 }
