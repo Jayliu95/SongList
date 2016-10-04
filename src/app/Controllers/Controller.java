@@ -45,6 +45,21 @@ public class Controller {
     private boolean editState = false;
     private boolean saveState = false;
 
+    private static ObservableList<Song> read(Path file) {
+        try {
+            InputStream in = Files.newInputStream(file);
+            ObjectInputStream ois = new ObjectInputStream(in);
+            List<Song> list = (List<Song>) ois.readObject() ;
+
+            return FXCollections.observableList(list);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return FXCollections.observableArrayList();
+    }
+
     @FXML private void initialize() {
         System.out.println("This should be initialized before anything else happens");
         // Initialize songList with saved data if it exists.
@@ -318,20 +333,6 @@ public class Controller {
                 }
             }
         });
-    }
-    private static ObservableList<Song> read(Path file) {
-        try {
-            InputStream in = Files.newInputStream(file);
-            ObjectInputStream ois = new ObjectInputStream(in);
-            List<Song> list = (List<Song>) ois.readObject() ;
-
-            return FXCollections.observableList(list);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return FXCollections.observableArrayList();
     }
 
 }
