@@ -14,11 +14,12 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import javax.swing.*;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Controller {
@@ -44,11 +45,26 @@ public class Controller {
     private boolean editState = false;
     private boolean saveState = false;
 
+    private static ObservableList<Song> read(Path file) {
+        try {
+            InputStream in = Files.newInputStream(file);
+            ObjectInputStream ois = new ObjectInputStream(in);
+            List<Song> list = (List<Song>) ois.readObject() ;
+
+            return FXCollections.observableList(list);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return FXCollections.observableArrayList();
+    }
 
     @FXML private void initialize() {
         System.out.println("This should be initialized before anything else happens");
         // Initialize songList with saved data if it exists.
-        songObservableList = FXCollections.observableArrayList();
+        Path path = Paths.get("Objectsavefile.ser");
+        songObservableList = read(path);
         songListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -283,6 +299,8 @@ public class Controller {
         deleteBtn.setDisable(false);
         disableForm(false);
     }
+
+
 
     public void write(Stage primaryStage) {
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {

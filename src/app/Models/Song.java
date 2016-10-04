@@ -5,16 +5,17 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
  * Created by xliu189 on 10/1/2016.
  */
-public class Song implements Comparable<Song> {
-    private StringProperty title;
-    private StringProperty artist;
-    private StringProperty album;
-    private IntegerProperty year;
+public class Song implements Comparable<Song>, Serializable {
+    private String title;
+    private String artist;
+    private String album;
+    private int year;
 
     /**
      * Default constructor.
@@ -30,13 +31,10 @@ public class Song implements Comparable<Song> {
      * @param artist : artist of the song.
      */
     public Song(String title, String artist) {
-        this.title = new SimpleStringProperty(title);
-        this.artist = new SimpleStringProperty(artist);
-
-        // Dummy initialization.
-        this.album = new SimpleStringProperty();
-        this.year = new SimpleIntegerProperty();
+        this.title = title;
+        this.artist = artist;
     }
+
     /**
      * Constructor with some initial data.
      *
@@ -46,48 +44,45 @@ public class Song implements Comparable<Song> {
      * @param year : year the song was made.
      */
     public Song(String title, String artist, String album, int year) {
-        this.title = new SimpleStringProperty(title);
-        this.artist = new SimpleStringProperty(artist);
-        this.album = new SimpleStringProperty(album);
+        this.title = title;
+        this.artist = artist;
+        this.album = album;
         //  Ignore 0 as a valid year for song.
-        if(year == 0){
-            this.year = new SimpleIntegerProperty();
-        }else {
-            this.year = new SimpleIntegerProperty(year);
+        if(year != 0){
+            this.year = year;
         }
     }
 
-
     public String getTitle(){
-        return title.get();
+        return title;
     }
 
     public void setTitle(String newTitle){
-        this.title.set(newTitle);
+        this.title = newTitle;
     }
 
     public String getArtist(){
-        return artist.get();
+        return artist;
     }
 
     public void setArtist(String newArtist){
-        this.artist.set(newArtist);
+        this.artist = newArtist;
     }
 
     public String getAlbum(){
-        return album.get();
+        return album;
     }
 
     public void setAlbum(String newAlbum){
-        this.album.set(newAlbum);
+        this.album = newAlbum;
     }
 
     public int getYear(){
-        return year.get();
+        return year;
     }
 
     public void setYear(int newYear){
-        this.year.set(newYear);
+        this.year = newYear;
     }
 
     @Override
