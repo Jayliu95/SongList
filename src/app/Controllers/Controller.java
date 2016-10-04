@@ -45,26 +45,18 @@ public class Controller {
     private boolean editState = false;
     private boolean saveState = false;
 
-    private static ObservableList<Song> read(Path file) {
-        try {
-            InputStream in = Files.newInputStream(file);
-            ObjectInputStream ois = new ObjectInputStream(in);
-            List<Song> list = (List<Song>) ois.readObject() ;
-
-            return FXCollections.observableList(list);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return FXCollections.observableArrayList();
-    }
-
     @FXML private void initialize() {
         System.out.println("This should be initialized before anything else happens");
         // Initialize songList with saved data if it exists.
-        Path path = Paths.get("Objectsavefile.ser");
+        File yourFile = new File("Objectsavefile.ser");
+        try {
+            yourFile.createNewFile(); // if file already exists will do nothing
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Path path = Paths.get(yourFile.getPath());
         songObservableList = read(path);
+        songListView.setItems(songObservableList.sorted());
         songListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -74,7 +66,14 @@ public class Controller {
                 changeToEditState();
             }
         });
-        songListView.setItems(songObservableList.sorted());
+        if(songObservableList.size() > 0){
+            System.out.println("Auto Selecting the first item! " + songObservableList.get(0));
+            selectSong = songObservableList.get(0);
+            songListView.getSelectionModel().selectFirst();
+            showSongOnForm(selectSong);
+            changeToEditState();
+            return;
+        }
         resetStates();
         changeToAddState();
 
@@ -319,6 +318,20 @@ public class Controller {
                 }
             }
         });
+    }
+    private static ObservableList<Song> read(Path file) {
+        try {
+            InputStream in = Files.newInputStream(file);
+            ObjectInputStream ois = new ObjectInputStream(in);
+            List<Song> list = (List<Song>) ois.readObject() ;
+
+            return FXCollections.observableList(list);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return FXCollections.observableArrayList();
     }
 
 }
