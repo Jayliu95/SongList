@@ -39,34 +39,9 @@ public class Controller {
     private boolean addState = false;
     private boolean editState = false;
     private boolean saveState = false;
-    private ObservableList<Song> read (Path SonglistPath){
-        try{
-            InputStream in=Files.newInputStream(SonglistPath);
-            ObjectInputStream ois=new ObjectInputStream(in);
-            List<Song>list=(List<Song>)ois.readObject();
-            return FXCollections.observableList(list);
-        }
-        catch(ClassNotFoundException e){
-            e.printStackTrace();
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
-        return FXCollections.emptyObservableList();
-    }
-    private void write(Path SonglistPath){
-        try{
-            OutputStream fos = Files.newOutputStream(SonglistPath);
-            ObjectOutputStream oos= new ObjectOutputStream(fos);
-            oos.writeObject(new ArrayList<Song>(songObservableList));
-            oos.close();
-        }catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
+
     @FXML private void initialize() {
+
         System.out.println("This should be initialized before anything else happens");
         // Initialize songList with saved data if it exists.
         songObservableList = FXCollections.observableArrayList();
@@ -86,6 +61,81 @@ public class Controller {
         changeToAddState();
 
     }
+    //read observablelist of file into stream
+    private ObservableList<Song> read (Path SonglistPath){
+        try{
+            InputStream in=Files.newInputStream(SonglistPath);
+            ObjectInputStream ois=new ObjectInputStream(in);
+            List<Song>list=(List<Song>)ois.readObject();
+            return FXCollections.observableList(list);
+        }
+        catch(ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+        return FXCollections.emptyObservableList();
+    }
+    //write observablelist to file
+    private void write(Path SonglistPath){
+        try{
+            OutputStream fos = Files.newOutputStream(SonglistPath);
+            ObjectOutputStream oos= new ObjectOutputStream(fos);
+            oos.writeObject(new ArrayList<Song>(songObservableList));
+            oos.close();
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    @FXML protected void handleAddButtonAction(ActionEvent event) {
+        info_msg.setText("");
+        if(editState){
+            resetStates();
+            changeToAddState();
+            return;
+        }
+        if (title.getText().isEmpty() || artist.getText().isEmpty()){
+            setInfoMsg("Missing title and/or artist.", "red");
+            return;
+        }
+
+        //  Validate year as integer.
+        int yearValidate = 0;
+        if(!year.getText().isEmpty()) {
+            try {
+                yearValidate = Integer.parseInt(year.getText());
+            } catch (NumberFormatException error) {
+                setInfoMsg("Year must be an integer." ,"red");
+                return;
+            }
+        }
+        Song newSong = new Song(title.getText(), artist.getText(), album.getText(), yearValidate);
+        if (songObservableList.contains(newSong)) {
+            System.out.println("Hello world");
+            setInfoMsg("Song already exists in your playlist.", "red");
+            return;
+        }
+
+        // Adding the songs to observable list and list view.
+        selectSong = newSong;
+        songObservableList.addAll(newSong);
+       try{
+        Path temp=Files.createTempFile("Songs", "ser");
+        write(temp);
+       }
+       catch(IOException e){
+    	   e.printStackTrace();
+       }
+        songListView.getSelectionModel().select(newSong);
+        setInfoMsg("Song added successfully!", "green");
+        resetStates();
+        changeToEditState();
+    }
+    
+    /*
     @FXML protected void handleAddButtonAction(ActionEvent event) {
         info_msg.setText("");
         if(editState){
@@ -123,7 +173,8 @@ public class Controller {
         resetStates();
         changeToEditState();
     }
-
+*/
+    
     @FXML protected void handleEditButtonAction(ActionEvent event){
         info_msg.setText("");
         if(saveState){
