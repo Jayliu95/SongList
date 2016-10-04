@@ -41,7 +41,6 @@ public class Controller {
         System.out.println("This should be initialized before anything else happens");
         // Initialize songList with saved data if it exists.
         songObservableList = FXCollections.observableArrayList();
-        FXCollections.sort(songObservableList);
         songListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -49,10 +48,9 @@ public class Controller {
                 selectSong = songObservableList.get(songListView.getSelectionModel().getSelectedIndex());
                 showSongOnForm(selectSong);
                 changeToEditState();
-
             }
         });
-        songListView.setItems(songObservableList);
+        songListView.setItems(songObservableList.sorted());
         resetStates();
         changeToAddState();
 
@@ -64,6 +62,23 @@ public class Controller {
             changeToAddState();
             return;
         }
+        if(saveState){
+            if(!handleUnsavedChanges()) {
+                return;
+            }else{
+                changeToAddState();
+                return;
+            }
+        }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Add Confirmation");
+        alert.setHeaderText("Add Confirmation");
+        alert.setContentText("Are you sure you want to add the song to playlist?");
+        alert.showAndWait();
+        if (alert.getResult() == ButtonType.CANCEL) {
+            return;
+        }
+
         if (title.getText().isEmpty() || artist.getText().isEmpty()){
             setInfoMsg("Missing title and/or artist.", "red");
             return;
@@ -75,14 +90,14 @@ public class Controller {
             try {
                 yearValidate = Integer.parseInt(year.getText());
             } catch (NumberFormatException error) {
-                setInfoMsg("Year must be an integer." ,"red");
+                setInfoMsg("Year must be an integer.", "red");
                 return;
             }
         }
+
         Song newSong = new Song(title.getText(), artist.getText(), album.getText(), yearValidate);
-        if (songObservableList.contains(newSong)) {
-            System.out.println("Hello world");
-            setInfoMsg("Song already exists in your playlist.", "red");
+        if (songObservableList.contains(newSong)){
+            handleSongExistence();
             return;
         }
 
@@ -120,14 +135,15 @@ public class Controller {
                 }
             }
             /* Update does not reflect on FXML view. Resorting to delete and add method */
-            /*
-            selectSong.setTitle(title.getText());
-            selectSong.setAlbum(album.getText());
-            selectSong.setArtist(artist.getText());
-            selectSong.setYear(yearValidate);
-            */
-            Song updatedSong = new Song(title.getText(), album.getText(), artist.getText(), yearValidate);
+
+            Song updatedSong = new Song(title.getText(), artist.getText(), album.getText(), yearValidate);
             songObservableList.removeAll(selectSong);
+            if (songObservableList.contains(updatedSong)){
+                songObservableList.addAll(selectSong);
+                songListView.getSelectionModel().select(selectSong);
+                handleSongExistence();
+                return;
+            }
             selectSong = updatedSong;
             songObservableList.addAll(updatedSong);
             songListView.getSelectionModel().select(selectSong);
@@ -162,9 +178,29 @@ public class Controller {
         System.out.println(songObservableList);
     }
 
-
-
     // Utility Functions
+
+    private void handleSongExistence() {
+        Alert error = new Alert(Alert.AlertType.ERROR);
+        error.setTitle("Error");
+        error.setHeaderText("Your changes were not updated!");
+        error.setContentText("There already is a song with the same title and artist in the playlist!");
+        error.showAndWait();
+        if (error.getResult() == ButtonType.OK) {
+            return;
+        }
+    }
+
+    private boolean handleUnsavedChanges() {
+        Alert error = new Alert(Alert.AlertType.CONFIRMATION);
+        error.setTitle("Information");
+        error.setHeaderText("You have unsaved changes!");
+        error.setContentText("Click the CANCEL button to continue editing.");
+        error.showAndWait();
+        if (error.getResult() == ButtonType.CANCEL) {
+            return false;
+        }else{ return true; }
+    }
 
     private void setInfoMsg(String msg, String color){
         if (msg.isEmpty()){
@@ -229,6 +265,7 @@ public class Controller {
 
     private void changeToSaveState(){
         System.out.println("Current State: SaveState");
+        resetStates();
         saveState = true;
         //  During this state, users can still:
         //  add new songs, save changes, cancel changes, delete selected songs

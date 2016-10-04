@@ -11,10 +11,10 @@ import java.util.Comparator;
  * Created by xliu189 on 10/1/2016.
  */
 public class Song implements Comparable<Song> {
-    private final StringProperty title;
-    private final StringProperty artist;
-    private final StringProperty album;
-    private final IntegerProperty year;
+    private StringProperty title;
+    private StringProperty artist;
+    private StringProperty album;
+    private IntegerProperty year;
 
     /**
      * Default constructor.
@@ -51,7 +51,7 @@ public class Song implements Comparable<Song> {
         this.album = new SimpleStringProperty(album);
         //  Ignore 0 as a valid year for song.
         if(year == 0){
-            this.year = new SimpleIntegerProperty(year);
+            this.year = new SimpleIntegerProperty();
         }else {
             this.year = new SimpleIntegerProperty(year);
         }
@@ -92,12 +92,13 @@ public class Song implements Comparable<Song> {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || getClass() != obj.getClass()) {
+        if (obj == null || !(obj instanceof Song))
             return false;
-        }
-        //  Defining two songs being equal if they have the same title and artist
-        return (this.title == ((Song) obj).title && this.artist == ((Song) obj).artist);
+
+        return (this.getTitle().equalsIgnoreCase(((Song) obj).getTitle()) &&
+                this.getArtist().equalsIgnoreCase(((Song) obj).getArtist()));
     }
+
     @Override
     public int compareTo(Song otherSong) {
         return this.getTitle().compareToIgnoreCase(otherSong.getTitle());
